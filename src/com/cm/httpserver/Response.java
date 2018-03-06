@@ -28,6 +28,8 @@ public class Response {
     }
 
     public Response(Socket client) {
+        this();
+
         try {
             this.bw = new BufferedWriter(
                     new OutputStreamWriter(client.getOutputStream())

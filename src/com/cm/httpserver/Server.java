@@ -24,7 +24,7 @@ public class Server {
 
     public void start() {
         try {
-            server = new ServerSocket(8888);
+            server = new ServerSocket(8989);
             this.receive();
         } catch (IOException e) {
             e.printStackTrace();
@@ -46,7 +46,7 @@ public class Server {
             // 响应
             Response response = new Response(client);
 
-            response.println("<html><head><title>Response</title></head><body>hello CM server!</body></html>");
+            response.println("<html><head><title>Hello CM server</title></head><body><h1>Socket Connected</h1></body></html>");
             response.pushToClient(200);
 
         } catch (IOException e) {
