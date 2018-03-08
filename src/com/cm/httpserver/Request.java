@@ -49,6 +49,22 @@ public class Request {
             return;
         }
 
+        /*
+         * =====================================
+         * get /src/index.html?name=dean&age=22 http/1.1
+         * =====================================
+         * */
+
+        // 查询字符串
+        String paramString = "";
+
+        // 请求首行信息
+        String firstLine = requestInfo.substring(0, requestInfo.indexOf(CRLF));
+        // / 第一次出现的位置索引
+        int firIdx = firstLine.indexOf("/");
+        this.method = firstLine.substring(0, firIdx).trim();
+
+        String urlStr = firstLine.substring(firIdx, firstLine.indexOf("HTTP/")).trim();
 
     }
 }
