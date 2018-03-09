@@ -18,4 +18,8 @@ public class Util {
             }
         }
     }
+
+    public static void getParam() {
+        
+    }
 }
