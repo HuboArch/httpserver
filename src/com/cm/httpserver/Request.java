@@ -66,5 +66,43 @@ public class Request {
 
         String urlStr = firstLine.substring(firIdx, firstLine.indexOf("HTTP/")).trim();
 
+        /*
+         * =============
+         * 简单设定请求方式为 get 和 post
+         *
+         * post方式，请求参数在请求正文内
+         *
+         * get方式，请求参数如果有，则存在于请求首行信息的 url 内
+         *
+         * =============
+         * */
+
+        if (this.method.equalsIgnoreCase("post")) {
+            this.url = urlStr;
+            paramString = requestInfo.substring(requestInfo.lastIndexOf(CRLF));
+        } else if (this.method.equalsIgnoreCase("get")) {
+            if (urlStr.contains("?")) {
+                // 如果存在查询参数
+                String[] urlArr = urlStr.split("\\?");
+
+                this.url = urlArr[0];
+                paramString = urlArr[1];
+            } else {
+                this.url = urlStr;
+            }
+        }
+
+        if (paramString.equals("")) {
+            return;
+        }
+
+        // 将请求参数封装到 Map中
+        parseParams(paramString);
+    }
+
+    private void parseParams(String paramString) {
+        String queryStr = "name=dean&age=12&fav=football&fav=movie&fav=music";
+
+
     }
 }
