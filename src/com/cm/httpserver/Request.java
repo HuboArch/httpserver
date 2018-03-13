@@ -2,10 +2,7 @@ package com.cm.httpserver;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Request {
     // 请求方式
@@ -15,7 +12,7 @@ public class Request {
     // 查询参数
     private Map<String, List<String>> queryString;
 
-    public static final String CRLF = "\r\n";
+    private static final String CRLF = "\r\n";
     private InputStream is;
     private String requestInfo;
 
@@ -79,7 +76,7 @@ public class Request {
 
         if (this.method.equalsIgnoreCase("post")) {
             this.url = urlStr;
-            paramString = requestInfo.substring(requestInfo.lastIndexOf(CRLF));
+            paramString = requestInfo.substring(requestInfo.lastIndexOf(CRLF)).trim();
         } else if (this.method.equalsIgnoreCase("get")) {
             if (urlStr.contains("?")) {
                 // 如果存在查询参数
