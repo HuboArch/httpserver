@@ -2,6 +2,8 @@ package com.cm.httpserver;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.*;
 
 public class Request {
@@ -101,5 +103,15 @@ public class Request {
         String queryStr = "name=dean&age=12&fav=football&fav=movie&fav=music";
 
 
+    }
+
+    // MIME 解码
+    private String decode(String value, String code) {
+        try {
+            return URLDecoder.decode(value, code);
+        } catch (UnsupportedEncodingException ignored) {
+        }
+
+        return null;
     }
 }
