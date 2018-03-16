@@ -101,7 +101,6 @@ public class Request {
 
     private void parseParams(String paramString) {
         String[] arr = paramString.split("&");
-        Map<String, List<String>> stringListMap = new HashMap<>();
 
         for (String str : arr) {
             String[] keyValue = str.split("=");
@@ -114,13 +113,41 @@ public class Request {
             String value = keyValue[1] == null ? null : decodeUtil(keyValue[1], "gbk");
 
             // 分拣存储
-            if (!stringListMap.containsKey(key)) {
-                stringListMap.put(key, new ArrayList<>());
+            if (!queryString.containsKey(key)) {
+                queryString.put(key, new ArrayList<>());
             }
 
-            List<String> strings = stringListMap.get(key);
+            List<String> strings = queryString.get(key);
             strings.add(value);
         }
+    }
+
+    /**
+     * 在查询字符串中，根据 key 返回相应的字符串数组
+     *
+     * @param key queryString 中的 key
+     * @return 字符串数组
+     */
+    public String[] getParameterValues(String key) {
+        List<String> values = queryString.get(key);
+
+        if (null == values) {
+            return null;
+        } else {
+            return values.toArray(new String[0]);
+        }
+    }
+
+    /**
+     * 在查询字符串中，根据 key 返回对应的值
+     *
+     * @param key queryString 中的 key
+     * @return 对应的值
+     */
+    public String getParameterValue(String key) {
+        String[] values = getParameterValues(key);
+
+        return values == null ? null : values[0];
     }
 
     // MIME 解码
