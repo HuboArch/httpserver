@@ -21,7 +21,7 @@ public class Request {
     public Request() {
         this.method = "";
         this.url = "";
-        this.queryString = new HashMap<String, List<String>>();
+        this.queryString = new HashMap<>();
         this.requestInfo = "";
     }
 
@@ -100,13 +100,31 @@ public class Request {
     }
 
     private void parseParams(String paramString) {
-        String queryStr = "name=dean&age=12&fav=football&fav=movie&fav=music";
+        String[] arr = paramString.split("&");
+        Map<String, List<String>> stringListMap = new HashMap<>();
 
+        for (String str : arr) {
+            String[] keyValue = str.split("=");
 
+            if (keyValue.length == 1) {
+                keyValue = Arrays.copyOf(keyValue, 2);
+            }
+
+            String key = keyValue[0];
+            String value = keyValue[1] == null ? null : decodeUtil(keyValue[1], "gbk");
+
+            // 分拣存储
+            if (!stringListMap.containsKey(key)) {
+                stringListMap.put(key, new ArrayList<>());
+            }
+
+            List<String> strings = stringListMap.get(key);
+            strings.add(value);
+        }
     }
 
     // MIME 解码
-    private String decode(String value, String code) {
+    private String decodeUtil(String value, String code) {
         try {
             return URLDecoder.decode(value, code);
         } catch (UnsupportedEncodingException ignored) {
