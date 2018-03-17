@@ -69,9 +69,11 @@ public class Response {
     }
 
     // 响应正文
-    public void println(String info) {
+    public Response println(String info) {
         resContent.append(info).append(CRLF);
         len += (info + CRLF).getBytes().length;
+
+        return this;
     }
 
     // 发送到客户端

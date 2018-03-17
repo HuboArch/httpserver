@@ -12,32 +12,22 @@ public class Request {
     private String method;
     // URL
     private String url;
+
+    public String getUrl() {
+        return url;
+    }
+
     // 查询参数
     private Map<String, List<String>> queryString;
 
     private static final String CRLF = "\r\n";
-    private InputStream is;
     private String requestInfo;
 
-    public Request() {
+    public Request(String requestInfo) {
         this.method = "";
         this.url = "";
         this.queryString = new HashMap<>();
-        this.requestInfo = "";
-    }
-
-    public Request(InputStream is) {
-        this();
-        this.is = is;
-
-        try {
-            byte[] buf = new byte[1024];
-            int len = is.read(buf);
-
-            requestInfo = new String(buf, 0, len);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.requestInfo = requestInfo;
 
         parseRequestInfo();
     }
@@ -62,7 +52,7 @@ public class Request {
         String firstLine = requestInfo.substring(0, requestInfo.indexOf(CRLF));
         // / 第一次出现的位置索引
         int firIdx = firstLine.indexOf("/");
-        this.method = firstLine.substring(0, firIdx).trim();
+        method = firstLine.substring(0, firIdx).trim();
 
         String urlStr = firstLine.substring(firIdx, firstLine.indexOf("HTTP/")).trim();
 
