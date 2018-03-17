@@ -34,7 +34,7 @@ public class Request {
             byte[] buf = new byte[1024];
             int len = is.read(buf);
 
-            this.requestInfo = new String(buf, 0, len);
+            requestInfo = new String(buf, 0, len);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -77,18 +77,18 @@ public class Request {
          * =============
          * */
 
-        if (this.method.equalsIgnoreCase("post")) {
-            this.url = urlStr;
+        if (method.equalsIgnoreCase("post")) {
+            url = urlStr;
             paramString = requestInfo.substring(requestInfo.lastIndexOf(CRLF)).trim();
-        } else if (this.method.equalsIgnoreCase("get")) {
+        } else if (method.equalsIgnoreCase("get")) {
             if (urlStr.contains("?")) {
                 // 如果存在查询参数
                 String[] urlArr = urlStr.split("\\?");
 
-                this.url = urlArr[0];
+                url = urlArr[0];
                 paramString = urlArr[1];
             } else {
-                this.url = urlStr;
+                url = urlStr;
             }
         }
 

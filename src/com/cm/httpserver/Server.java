@@ -14,9 +14,6 @@ public class Server {
 
     private ServerSocket server;
 
-    public Server() {
-    }
-
     public static void main(String[] args) {
         Server server = new Server();
         server.start();
@@ -39,14 +36,15 @@ public class Server {
             byte[] buf = new byte[20480];
             int len = client.getInputStream().read(buf);
 
-            // 输出浏览器的请求信息
+            // 打印客户端(浏览器)的请求信息
             String requestInfo = new String(buf, 0, len).trim();
             System.out.println(requestInfo);
 
             // 响应
             Response response = new Response(client);
 
-            response.println("<html><head><title>Hello CM server</title></head><body><h1>Socket Connected</h1></body></html>");
+            response.println("<html><head><title>Hello CM server</title></head>");
+            response.println("<body><h1>Socket Connected</h1></body></html>");
             response.pushToClient(200);
 
         } catch (IOException e) {
