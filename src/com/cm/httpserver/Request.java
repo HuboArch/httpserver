@@ -3,6 +3,7 @@ package com.cm.httpserver;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.net.URLDecoder;
 import java.util.*;
 
@@ -131,7 +132,7 @@ public class Request {
     public String[] getParameterValues(String key) {
         List<String> values = queryString.get(key);
 
-        if (null == values) {
+        if (values == null) {
             return null;
         } else {
             return values.toArray(new String[0]);
