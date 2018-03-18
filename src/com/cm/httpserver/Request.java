@@ -14,10 +14,6 @@ public class Request {
     // 查询参数
     private Map<String, List<String>> queryString;
 
-    public String getRequestInfo() {
-        return requestInfo;
-    }
-
     private String requestInfo;
 
     public Request() {
@@ -25,28 +21,24 @@ public class Request {
         this.url = "";
         this.queryString = new HashMap<>();
 
-        parseRequestInfo();
+
     }
 
     public Request(Socket client) {
         this();
 
         try {
-            BufferedReader br = new BufferedReader(
-                    new InputStreamReader(client.getInputStream())
-            );
+            InputStream is = client.getInputStream();
 
-            StringBuilder stringBuilder = new StringBuilder();
-            String store = "";
-            while ((store = br.readLine()) != null) {
-                stringBuilder.append(store);
-            }
+            byte[] buf = new byte[20480];
+            int len = is.read(buf);
 
-            requestInfo = stringBuilder.toString();
-
+            requestInfo = new String(buf, 0, len);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        parseRequestInfo();
     }
 
     // 分析请求信息
