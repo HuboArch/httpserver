@@ -1,41 +1,58 @@
 package com.cm.httpserver;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
+import java.io.*;
+import java.net.Socket;
 import java.net.URLDecoder;
 import java.util.*;
 
 public class Request {
+    private static final String CRLF = "\r\n";
     // 请求方式
     private String method;
     // URL
     private String url;
-
-    public String getUrl() {
-        return url;
-    }
-
     // 查询参数
     private Map<String, List<String>> queryString;
 
-    private static final String CRLF = "\r\n";
+    public String getRequestInfo() {
+        return requestInfo;
+    }
+
     private String requestInfo;
 
-    public Request(String requestInfo) {
+    public Request() {
         this.method = "";
         this.url = "";
         this.queryString = new HashMap<>();
-        this.requestInfo = requestInfo;
 
         parseRequestInfo();
+    }
+
+    public Request(Socket client) {
+        this();
+
+        try {
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(client.getInputStream())
+            );
+
+            StringBuilder stringBuilder = new StringBuilder();
+            String store = "";
+            while ((store = br.readLine()) != null) {
+                stringBuilder.append(store);
+            }
+
+            requestInfo = stringBuilder.toString();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // 分析请求信息
     private void parseRequestInfo() {
 
-        if (null == requestInfo || (requestInfo = requestInfo.trim()).equals("")) {
+        if (requestInfo == null || (requestInfo = requestInfo.trim()).equals("")) {
             return;
         }
 

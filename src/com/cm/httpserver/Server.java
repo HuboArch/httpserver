@@ -1,5 +1,7 @@
 package com.cm.httpserver;
 
+import com.cm.util.Util;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -20,11 +22,15 @@ public class Server {
     }
 
     public void start() {
+        start(8888);
+    }
+
+    public void start(int port) {
         try {
-            server = new ServerSocket(8989);
-            this.receive();
+            server = new ServerSocket(port);
+            receive();
         } catch (IOException e) {
-            e.printStackTrace();
+            //stop();
         }
     }
 
@@ -33,21 +39,15 @@ public class Server {
             // 侦听客户端的连接请求
             Socket client = server.accept();
 
-            byte[] buf = new byte[20480];
-            int len = client.getInputStream().read(buf);
-
-            // 打印客户端的请求信息
-            String requestInfo = new String(buf, 0, len).trim();
-            System.out.println(requestInfo);
-
-            Request request = new Request(requestInfo);
+            Request request = new Request(client);
             Response response = new Response(client);
 
             Servlet servlet = new Servlet();
             servlet.service(request, response);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            // stop();
         }
     }
+
 }
